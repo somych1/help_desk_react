@@ -5,20 +5,21 @@ class OrderController < ApplicationController
 	    if(payload_body != "")
 	      	@payload = JSON.parse(payload_body).symbolize_keys
 	    end
-	 #    if !session[:logged_in]
-	 #      	halt 200, {
-	 #        	success: false,
-	 #        	message: 'you are not loged in'
-	 #      	}.to_json
-		# end
+
+	    if !session[:logged_in]
+	      	halt 200, {
+	        	success: false,
+	        	message: 'you are not loged in'
+	      	}.to_json
+		end
 	end
 
 	# get all arders
 	get '/' do
-		if session[:diver]
-			@order = Order.where(driver_id: session[:driver_id])
+		if session[:driver]
+			order = Order.where(driver_id: session[:driver_id])
 		else
-			@order = Order.where(employee_id: session[:employee_id])
+			order = Order.where(employee_id: session[:employee_id])
 		end
 		{
 			success: true,
@@ -28,10 +29,11 @@ class OrderController < ApplicationController
 
 	# new order
 	post '/' do
+		# binding.pry
 		order = Order.new
 		order.title = @payload[:title]
 
-		if session[:diver]
+		if session[:driver]
 			order.driver_id = session[:driver_id]
 		else
 			order.employee_id = session[:employee_id]

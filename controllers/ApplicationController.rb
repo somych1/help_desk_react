@@ -12,12 +12,12 @@ class ApplicationController < Sinatra::Base
 
   # ENV['API_KEY']
 
-  # use Rack::Session::Cookie,  :key => 'rack.session',
-  #                             :path => '/',
-  #                             :secret => 'secret'
+  use Rack::Session::Cookie,  :key => 'rack.session',
+                              :path => '/',
+                              :secret => 'secret'
 
-  # use Rack::MethodOverride
-  # set :method_override, true
+  use Rack::MethodOverride
+  set :method_override, true
 
   # require 'open-uri'
 

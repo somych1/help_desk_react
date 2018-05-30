@@ -53,7 +53,7 @@ class DriverController < ApplicationController
 	  		session[:logged_in] = true
 	  		session[:name] = driver.name
 	  		session[:username] = username
-	  		session[:employee_id] = driver.id
+	  		session[:driver_id] = driver.id
 	  		session[:truck] = driver.truck_num
 		  	session[:make] = driver.make
 		  	session[:model] = driver.model
