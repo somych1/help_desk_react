@@ -3,8 +3,14 @@ class OrderController < ApplicationController
 	before do
 	    payload_body = request.body.read
 	    if(payload_body != "")
-	      @payload = JSON.parse(payload_body).symbolize_keys
+	      	@payload = JSON.parse(payload_body).symbolize_keys
 	    end
+	 #    if !session[:logged_in]
+	 #      	halt 200, {
+	 #        	success: false,
+	 #        	message: 'you are not loged in'
+	 #      	}.to_json
+		# end
 	end
 
 	# get all arders
@@ -26,9 +32,9 @@ class OrderController < ApplicationController
 		order.title = @payload[:title]
 
 		if session[:diver]
-			order.driver_id = @session[:driver_id]
+			order.driver_id = session[:driver_id]
 		else
-			order.employee_id = @session[:employee_id]
+			order.employee_id = session[:employee_id]
 		end
 
 		# order.comment = @payload[:comment]
@@ -39,7 +45,7 @@ class OrderController < ApplicationController
 		order.save
 		{
 			success: true,
-			order: @order
+			order: order
 		}.to_json
 	end
 
