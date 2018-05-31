@@ -47,7 +47,7 @@ class OrderController < ApplicationController
 
 		if session[:manager]
 			order.driver_id = session[:driver_id]
-			order.employee_id = session[:employee_id]
+			order.employee_id = @payload[:employee_id]
 		else
 			order.driver_id = session[:driver_id]
 		end
