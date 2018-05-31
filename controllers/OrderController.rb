@@ -14,16 +14,28 @@ class OrderController < ApplicationController
 		end
 	end
 
-	# get all arders
+	# get all orders
 	get '/' do
+		# binding.pry
 		if session[:driver]
 			order = Order.where(driver_id: session[:driver_id])
-		else
+		elsif session[:manager]
+			order = Order.all
+		else 
 			order = Order.where(employee_id: session[:employee_id])
 		end
 		{
 			success: true,
-			order: @order
+			order: order
+		}.to_json
+	end
+
+	# order detail
+	get '/:id' do
+		order = Order.find(params[:id])
+		{
+			success: true,
+			order: order
 		}.to_json
 	end
 
@@ -33,17 +45,18 @@ class OrderController < ApplicationController
 		order = Order.new
 		order.title = @payload[:title]
 
-		if session[:driver]
+		if session[:manager]
 			order.driver_id = session[:driver_id]
-		else
 			order.employee_id = session[:employee_id]
+		else
+			order.driver_id = session[:driver_id]
 		end
 
 		# order.comment = @payload[:comment]
 		order.description = @payload[:description]
 		# order.stating = @payload[:stating]
 		# order.ending = @payload[:ending]
-		# order.completed = @payload[:completed]
+		order.completed = @payload[:completed]
 		order.save
 		{
 			success: true,

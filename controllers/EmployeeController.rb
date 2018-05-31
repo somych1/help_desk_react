@@ -5,8 +5,29 @@ class EmployeeController < ApplicationController
 	    if(payload_body != "")
 	      @payload = JSON.parse(payload_body).symbolize_keys
 	    end
+	    if !session[:logged_in]
+	      	halt 200, {
+	        	success: false,
+	        	message: 'you are not loged in'
+	      	}.to_json
+		end
 	end
 
+	get '/' do
+		employees = Employee.all
+		{
+			success: true,
+			employees: employees
+		}.to_json
+	end
+
+	get '/:id' do
+		employee = Employee.find(params[:id])
+		{
+			success: true,
+			employee: employee.employee_id
+		}
+	end
 
 	post '/register' do
 	  	employee = Employee.new
@@ -50,6 +71,7 @@ class EmployeeController < ApplicationController
 	  		session[:name] = employee.name
 	  		session[:username] = username
 	  		session[:employee_id] = employee.id
+	  		session[:manager] = employee.manager
 		  	session[:driver] = false
 		  	{
 		  		success: true,

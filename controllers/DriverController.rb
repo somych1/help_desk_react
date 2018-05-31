@@ -5,6 +5,20 @@ class DriverController < ApplicationController
 	    if(payload_body != "")
 	      @payload = JSON.parse(payload_body).symbolize_keys
 	    end
+	 #    if !session[:logged_in]
+	 #      	halt 200, {
+	 #        	success: false,
+	 #        	message: 'you are not loged in'
+	 #      	}.to_json
+		# end
+	end
+
+	get '/' do
+		drivers = Driver.all
+		{
+			success: true,
+			drivers: drivers
+		}.to_json
 	end
 
 	post '/register' do
