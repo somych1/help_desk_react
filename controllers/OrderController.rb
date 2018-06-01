@@ -20,7 +20,7 @@ class OrderController < ApplicationController
 		if session[:driver]
 			order = Order.where(driver_id: session[:driver_id])
 		elsif session[:manager]
-			order = Order.where(completed: params[:completed])
+			order = Order.all
 		else 
 			order = Order.where(employee_id: session[:employee_id])
 		end
