@@ -25,8 +25,8 @@ class EmployeeController < ApplicationController
 		employee = Employee.find(params[:id])
 		{
 			success: true,
-			employee: employee.employee_id
-		}
+			employee: employee
+		}.to_json
 	end
 
 	post '/register' do
