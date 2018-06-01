@@ -20,13 +20,22 @@ class OrderController < ApplicationController
 		if session[:driver]
 			order = Order.where(driver_id: session[:driver_id])
 		elsif session[:manager]
-			order = Order.all
+			order = Order.where(completed: params[:completed])
 		else 
 			order = Order.where(employee_id: session[:employee_id])
 		end
 		{
 			success: true,
 			order: order
+		}.to_json
+	end
+
+	# orders by emploee id
+	get '/employee/:employee_id' do
+		orders = Order.where(employee_id: params[:employee_id])
+		{
+			success: true,
+			orders: orders
 		}.to_json
 	end
 
