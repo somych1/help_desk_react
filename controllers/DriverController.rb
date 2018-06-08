@@ -21,6 +21,14 @@ class DriverController < ApplicationController
 		}.to_json
 	end
 
+	get '/:id' do
+		driver = Driver.find(params[:id])
+		{
+			success: true,
+			truck: driver.truck_num
+		}.to_json
+	end
+
 	post '/register' do
 	  	driver = Driver.new
 

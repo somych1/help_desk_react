@@ -60,12 +60,11 @@ class OrderController < ApplicationController
 		else
 			order.driver_id = session[:driver_id]
 		end
-
-		# order.comment = @payload[:comment]
+		order.comment = @payload[:comment]
 		order.description = @payload[:description]
+		order.completed = @payload[:completed]
 		# order.stating = @payload[:stating]
 		# order.ending = @payload[:ending]
-		order.completed = @payload[:completed]
 		order.save
 		{
 			success: true,
@@ -73,20 +72,30 @@ class OrderController < ApplicationController
 		}.to_json
 	end
 
-	put '/id' do
+	put '/:id' do
 		order = Order.find(params[:id])
-		order.title = @payload[:title]
-		order.driver_id = @payload[:driver_id]
-		order.employee_id = @payload[:employee_id]
+		if session[:manager]
+			order.description = @payload[:description]
+			order.employee_id = @payload[:employee_id]
+		end
 		order.comment = @payload[:comment]
-		order.description = @payload[:description]
-		# order.starting = @payload[:stating]
-		# order.ending = @payload[:ending]
 		order.completed = @payload[:completed]
-		order.save
+		employee = order.employee_id
+		if employee === nil
+			{
+				success: false,
+				message: 'Choose Employee'
+			}.to_json
+		else
+			order.save
+			{
+				success: true,
+				order: order
+			}.to_json
+		end
 	end
 
-	delete '/id' do
+	delete '/:id' do
 		order = Order.find(params[:id])
 		order.destroy
 		{

@@ -26,7 +26,6 @@ CREATE TABLE orders(
 	title VARCHAR(128),
 	driver_id INT REFERENCES drivers(id),
 	employee_id INT REFERENCES employees(id),
-	password_digest VARCHAR(256),
 	comment VARCHAR(512),
 	-- order_date CURRENT_DATE,
 	description VARCHAR(32),
