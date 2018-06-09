@@ -27,9 +27,6 @@ CREATE TABLE orders(
 	driver_id INT REFERENCES drivers(id),
 	employee_id INT REFERENCES employees(id),
 	comment VARCHAR(512),
-	-- order_date CURRENT_DATE,
 	description VARCHAR(32),
 	completed BOOLEAN
-	-- starting TIME,
-	-- ending TIME
 );

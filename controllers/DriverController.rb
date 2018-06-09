@@ -5,12 +5,6 @@ class DriverController < ApplicationController
 	    if(payload_body != "")
 	      @payload = JSON.parse(payload_body).symbolize_keys
 	    end
-	 #    if !session[:logged_in]
-	 #      	halt 200, {
-	 #        	success: false,
-	 #        	message: 'you are not loged in'
-	 #      	}.to_json
-		# end
 	end
 
 	get '/' do
@@ -21,13 +15,6 @@ class DriverController < ApplicationController
 		}.to_json
 	end
 
-	get '/:id' do
-		driver = Driver.find(params[:id])
-		{
-			success: true,
-			truck: driver.truck_num
-		}.to_json
-	end
 
 	post '/register' do
 	  	driver = Driver.new
@@ -104,30 +91,13 @@ class DriverController < ApplicationController
 	  	}.to_json
   	end
 
-  	put '/:id' do
-	    driver = Driver.find(params[:id])
-	    driver.name = @payload[:name]
-	    driver.username = @payload[:username]
-	    driver.password = @payload[:password]
-	    driver.truck_num = @payload[:truck_num]
-	  	driver.make = @payload[:make]
-	  	driver.model = @payload[:model]
-	  	driver.year = @payload[:year]
-
-	    driverExist = Driver.find_by username: driver.username
-	  	if driverExist
-	  		{
-	  			success: false,
-	  			message: "username already taken, try again"
-	  		}.to_json
-	  	else
-		  	driver.save
-		  	{
-		  		success: true,
-		  		message: 'Driver was successfuly updated'
-	  		}.to_json
-		end
-
-  	end
+	get '/:id' do
+		driver = Driver.find(params[:id])
+		{
+			success: true,
+			truck: driver.truck_num
+		}.to_json
+	end
+  	
 
 end
